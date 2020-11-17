@@ -1,0 +1,27 @@
+.Warning {
+
+  background: lightcoral;
+  padding: 8px;
+  border: 2px solid #ff4e4e;
+  border-radius: 5px;
+
+
+
+}
+.Task {
+  box-shadow: 5px 5px 15px -8px #000000;
+  margin: 20px;
+  padding: 8px;
+  display: flex;
+  justify-content: left;
+}
+.TaskAvatar {
+  border-radius: 5000px;
+  width: 40px;
+  height: 40px;
+  float: right;
+
+}
+.TaskText {
+  flex-grow: 1;
+}
