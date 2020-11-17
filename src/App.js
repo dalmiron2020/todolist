@@ -1,26 +1,29 @@
 import React from 'react';
 import './App.css';
+import data from './tasks.json';
+
+
 const Task = ({done, title, imageUrl}) => {
     return (<div className="Task">
             <input type="checkbox" checked={done} />
             <span className="TaskText">{title} </span>
-        <TaskAvatar imageUrl={imageUrl} />
+        {/* forma de realizar los condicionales en react */}
+
+        {imageUrl && <img className= "TaskAvatar" src={imageUrl} />}
         <button type="button"> editar </button>
             <button type="button"> borrar </button>
 
 
+
         </div>);
 };
-const TaskAvatar = ({imageUrl}) => {
-    if (imageUrl !== undefined) {
-        return (<img className="TaskAvatar" src={imageUrl}/>);
 
-    }
-    return null;
-}
 
 
 const TaskList = ({tasks}) => {
+    if (tasks.length === 0) {
+        return <div> No tasks in this page</div>
+    }
     return (
         <div>
             {tasks.map(task => <Task done={task.done} title={task.title} imageUrl = {task.imageUrl} />)}
@@ -54,9 +57,16 @@ const TaskCounter = ({tasks}) => {
 
 -  task.who ademas de nombre que contega la foto de la persona. Completado
 - Overwork warning: añadir un aviso de tenemos más de 5 tareas por hacer Completado
-- "paginación estatica: tasks va a ser una lista larga y tendremos una variable para controlar que tareas vemos.
+- "paginación estatica: tasks va a ser una lista larga y tendremos una variable para controlar que tareas vemos. completo
 -
  */
+
+ const  getTasks = (tasks, page, pageSize) => {
+        const initialPosition = page * pageSize;
+        return tasks.slice(page * pageSize, (page + 1) * pageSize);
+    };
+
+
 function App() {
 
 
@@ -65,20 +75,16 @@ queremos mostrar un aviso.
 
  */
     const overworkThereshold = 5;
-    const tasks =
-      [
-          {done:false, title:'Item 1', who: 'Pablo', },
-          {done:false, title: 'Item 2', who: 'Lidia', imageUrl:'/img/avatar2.jpg'},
-          {done:false, title: 'Item3', who: 'marta', imageUrl:'/img/avatar2.jpg'},
-          {done:false, title: 'Item4', who: 'Pablo', imageUrl:'/img/avatar2.jpg'},
-          {done:false, title: 'Item4', who: 'Pablo', imageUrl:'/img/avatar2.jpg'},
-          {done:false, title: 'Item4', who: 'Pablo',imageUrl:'/img/avatar2.jpg'},
-          {done:true, title: 'Item4', who: 'Pablo'},
+    const unfilteredTasks = data.tasks;
+    const amountOfTasks = unfilteredTasks.length;
+    const [page, setPage] = React.useState(0);
+    const pageSize = 10;
+    const pages = Math.ceil(amountOfTasks / 10);
+    const tasks = getTasks(unfilteredTasks, page, pageSize);
 
-      ];
+
+
         const amountOfNotDone = tasks.filter(task=> !task.done).length;
-
-
         return (<div>
         <h1> Todo List </h1>
                 <Warning tasks={tasks} />
@@ -105,7 +111,16 @@ queremos mostrar un aviso.
                   load more
 
               </div>
-          </div>
+              <div>
+                  Seeing page {page} o {pages}
+
+              </div>
+         </div>
+
+
+            {page > 0 && <button onClick={() => setPage(page - 1)}>Prev Page </button>}
+            {page < pages && <button onClick={() => setPage(page + 1)}>Next Page </button>}
+
       </div>
 
 
