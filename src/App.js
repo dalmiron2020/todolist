@@ -82,7 +82,92 @@ queremos mostrar un aviso.
     const pages = Math.ceil(amountOfTasks / 10);
     const tasks = getTasks(unfilteredTasks, page, pageSize);
 
+    const countSizes = [1, 2, 5, 10];
+    {/* Creación de nuestro primer custom hook useCounter en el que agrupamos diferentes acciones y funcionalidades para ejecutar una parte de nuestro software.
+    con ello conseguimos un codigo más limpio y ordenado ademas que para la propia compresión del programador u programadoes es más entendible */}
 
+    const useCounter = (initialCounter, initialCountSize) => {
+
+        const [counter, setCounter] = React.useState(initialCounter);
+        const [countSize, setCountSize] = React.useState(initialCountSize);
+        const countUp = () => setCounter(counter +countSize);
+        const reset = () => {
+            setCounter(initialCounter);
+            setCountSize(initialCountSize);
+    }
+        const changeCountSize = e => setCountSize(parseInt(e.target.value));{/* Cuando nosn encontramos problemas con la interpretación de numeros
+    y texto en este caso con el parseInt cambiamos el texto a numero*/}
+return {
+    counter,
+    countSize,
+    countUp,
+    reset,
+    changeCountSize,
+
+        }
+    }
+
+
+        {/*usestate utilización en diferentes botones   */}
+
+
+
+        const ButtonCounter = () => {
+      const {
+          counter,
+          countSize,
+          reset,
+          countUp,
+          changeCountSize
+      } = useCounter(0,1);
+    console.log("Rendering with countSize " + countSize);
+        return(
+            <>
+                <button onClick={countUp}>Count {counter}</button>
+                {/* La función siguiente lo que se consigue es que el boton reset aparezca cuando el boton contador pase de 0*/}
+                <select onChange={changeCountSize} value={countSize}>
+                    {countSizes.map(x => <option value={x}>{x}</option>)}
+                    console.log(e.target.value); {/* Esta información es la que queremos guardar */}
+                </select>
+                {counter > 0 && <button onClick={reset}>Cick to reset</button> }
+                <div>
+                    <p>
+                        Contador {countSize}
+                    </p>
+                </div>
+        </>
+    )
+}
+const ButtonCounter2 = () => {
+    const { counter, reset, countUp} = useCounter(0,7);
+        return (
+            <>
+                <p>Counted {counter}</p>
+                <button onClick={countUp} >Add 7</button>
+                <button onClick={reset}>Reset</button>
+
+                </>
+
+        )
+    };
+const Display= () => {
+    const  [inputText, setInputText] = React.useState('');
+    console.log(inputText);
+const [displayText, setDisplayText] = React.useState([]);
+const handleClick = () => {
+    setDisplayText([...displayText, inputText]);
+    setInputText('');
+}
+
+    return (<>
+        <input type = "text" onChange={e=> {
+            setInputText(e.target.value)
+        }} value={inputText}/>
+        <button onClick= {handleClick}> submit</button>
+        {displayText.map(x => <p>{x}</p>)}
+
+        </>);
+}
 
         const amountOfNotDone = tasks.filter(task=> !task.done).length;
         return (<div>
@@ -91,9 +176,10 @@ queremos mostrar un aviso.
 
           <h2> Ingresar tarea</h2>
 
-          <input type="text"></input>
 
-          <button type="button">submit</button>
+                <Display />
+
+
 
           <div>
               <div>
@@ -120,6 +206,13 @@ queremos mostrar un aviso.
 
             {page > 0 && <button onClick={() => setPage(page - 1)}>Prev Page </button>}
             {page < pages && <button onClick={() => setPage(page + 1)}>Next Page </button>}
+            <ButtonCounter/>
+            <div>
+            </div>
+                <ButtonCounter2 />
+
+
+
 
       </div>
 
