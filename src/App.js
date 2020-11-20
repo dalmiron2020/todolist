@@ -150,12 +150,17 @@ const ButtonCounter2 = () => {
 
         )
     };
-const Display= () => {
+    {/* Creamos un display donde los inputs añadidos generan un id correlativo */}
+const DisplayPeople = () => {
     const  [inputText, setInputText] = React.useState('');
-    console.log(inputText);
-const [displayText, setDisplayText] = React.useState([]);
+    const [id, setId] = React.useState(0);
+
+    const [people, setPeople] = React.useState([]);
+
 const handleClick = () => {
-    setDisplayText([...displayText, inputText]);
+    const someone = { name: inputText, id:id};
+    setPeople([...people, someone]);
+    setId (id +1);
     setInputText('');
 }
 
@@ -163,10 +168,11 @@ const handleClick = () => {
         <input type = "text" onChange={e=> {
             setInputText(e.target.value)
         }} value={inputText}/>
-        <button onClick= {handleClick}> submit</button>
-        {displayText.map(x => <p>{x}</p>)}
+        <button onClick= {handleClick}> Add people </button>
+        {people.map(x => <p>{x.name}({x.id})</p>)}
 
         </>);
+
 }
 
         const amountOfNotDone = tasks.filter(task=> !task.done).length;
@@ -176,8 +182,7 @@ const handleClick = () => {
 
           <h2> Ingresar tarea</h2>
 
-
-                <Display />
+                <DisplayPeople />
 
 
 
